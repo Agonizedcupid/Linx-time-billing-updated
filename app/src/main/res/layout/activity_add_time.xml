@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    tools:context=".Activity.AddTimeActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start Time:"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                />
+
+            <TextView
+                android:id="@+id/startTimeText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:layout_marginStart="7dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                />
+
+            <ImageView
+                android:id="@+id/startTimeDate"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/add_date_black"
+                />
+
+            <ImageView
+                android:id="@+id/startTimeClock"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/add_time_black"
+                android:layout_marginStart="15dp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="End Time:"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                />
+
+            <TextView
+                android:id="@+id/endTimeText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="OPEN"
+                android:layout_marginStart="7dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                />
+
+            <ImageView
+                android:id="@+id/endTimeDate"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/add_date_black"
+                />
+
+            <ImageView
+                android:id="@+id/endTimeClock"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/add_time_black"
+                android:layout_marginStart="15dp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Time:"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                />
+
+            <TextView
+                android:id="@+id/totalTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="00"
+                android:layout_marginStart="7dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Billable Time:"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                />
+
+            <TextView
+                android:id="@+id/billableTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="00"
+                android:layout_marginStart="7dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                />
+
+            <ImageView
+                android:id="@+id/billableClock"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/add_time_black"
+                android:layout_marginStart="15dp"
+                />
+
+
+        </LinearLayout>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:id="@+id/spinner"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description of work done"
+            android:textStyle="normal"
+            android:textSize="18sp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/black"
+            />
+
+        <EditText
+            android:id="@+id/workDescription"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@drawable/edit_text_background"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"
+            android:layout_gravity="start"
+            android:gravity="start"
+            android:padding="15dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        >
+
+        <Button
+            android:id="@+id/saveTime"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            />
+
+        <Button
+            android:id="@+id/ignoreTime"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="Ignore"
+            />
+    </LinearLayout>
+
+</RelativeLayout>

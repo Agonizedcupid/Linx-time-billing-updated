@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Linx Time and Billing</string>
+
+    <string-array name="workType">
+        <item>KM-Normal</item>
+        <item>Normal</item>
+        <item>palladium</item>
+        <item>Time And A Half</item>
+        <item>Double Time</item>
+    </string-array>
+</resources>
