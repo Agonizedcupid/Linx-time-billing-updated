@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.aariyan.linxtimeandbilling.Adapter.JobAdapter;
 import com.aariyan.linxtimeandbilling.Adapter.TimingAdapter;
+import com.aariyan.linxtimeandbilling.Constant.Constant;
 import com.aariyan.linxtimeandbilling.Database.DatabaseAdapter;
 import com.aariyan.linxtimeandbilling.MainActivity;
 import com.aariyan.linxtimeandbilling.Model.PostingModel;
@@ -68,14 +69,14 @@ public class JobsActivity extends AppCompatActivity {
             if (!list.get(i).getStatus().equals("OPEN")) {
                 posting.add(new PostingModel(
                         "" + list.get(i).getDescription(),
-                        ""+System.currentTimeMillis(),
+                        "" + System.currentTimeMillis(),
                         "" + list.get(i).getCustomerName(),
                         "",
                         "1642320000000",
                         "1642336200000",
                         "" + list.get(i).getTotalTime(),
                         "420",
-                        "" + list.get(i).getUID(),
+                        "" + Constant.UID,
                         "0",
                         //"LL" + list.get(i).getWorkType(),
                         "" + list.get(i).getBillableTime(),

@@ -7,4 +7,6 @@ public class Constant {
     public static final String URL_GOODS_DETAILS_LIST = "http://102.37.0.48/scannergrv/GetPOByLocation.php?";
     public static final String URL_PO_HEADER = "http://102.37.0.48/scannergrv/GetPOHeader.php?";
     public static final String URL_PO_LINE = "http://102.37.0.48/scannergrv/GetPOLine.php?";
+
+    public static String UID = "";
 }

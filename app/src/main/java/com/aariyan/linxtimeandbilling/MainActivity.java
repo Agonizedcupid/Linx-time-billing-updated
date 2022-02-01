@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.aariyan.linxtimeandbilling.Activity.HomeActivity;
 import com.aariyan.linxtimeandbilling.Adapter.UserListAdapter;
+import com.aariyan.linxtimeandbilling.Constant.Constant;
 import com.aariyan.linxtimeandbilling.Database.DatabaseAdapter;
 import com.aariyan.linxtimeandbilling.Interface.Authentication;
 import com.aariyan.linxtimeandbilling.Model.CustomerModel;
@@ -220,6 +221,8 @@ public class MainActivity extends AppCompatActivity implements Authentication {
                             .putExtra("name", name)
                             .putExtra("id", id)
                     );
+
+                    Constant.UID = id;
                 } else {
                     Toast.makeText(MainActivity.this, "Wrong Credential!", Toast.LENGTH_SHORT).show();
                 }
