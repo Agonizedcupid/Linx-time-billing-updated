@@ -39,7 +39,7 @@ public class TimingAdapter extends RecyclerView.Adapter<TimingAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         TimingModel model = list.get(position);
         holder.status.setText(model.getStatus());
-        holder.startDate.setText(model.getStartDate());
+        holder.startDate.setText(convertToJavaTime(model.getStartDate()));
         holder.totalTime.setText(model.getTotalTime());
 
         holder.deleteTime.setOnClickListener(new View.OnClickListener() {
@@ -48,6 +48,11 @@ public class TimingAdapter extends RecyclerView.Adapter<TimingAdapter.ViewHolder
                 deleteTiming.deleteTiming(model.getUserName(), model.getCustomerName(), model.getUID());
             }
         });
+    }
+
+    private String convertToJavaTime(String startDate) {
+        java.util.Date time = new java.util.Date((long) Long.parseLong(startDate) * 1000);
+        return time.toString();
     }
 
     @Override

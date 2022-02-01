@@ -58,8 +58,14 @@ public class HomeActivity extends AppCompatActivity implements DeleteTiming {
 
     private void loadData() {
         List<TimingModel> list = databaseAdapter.getTiming(userName, customerName);
+        List<TimingModel> modelList = new ArrayList<>();
         //Toast.makeText(HomeActivity.this, "Size: " + list.size(), Toast.LENGTH_SHORT).show();
-        adapter = new TimingAdapter(HomeActivity.this, list, this);
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getStatus().equals("OPEN")) {
+                modelList.add(list.get(i));
+            }
+        }
+        adapter = new TimingAdapter(HomeActivity.this, modelList, this);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
@@ -78,7 +84,7 @@ public class HomeActivity extends AppCompatActivity implements DeleteTiming {
         jobs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(HomeActivity.this,JobsActivity.class));
+                startActivity(new Intent(HomeActivity.this, JobsActivity.class));
             }
         });
 
@@ -117,7 +123,7 @@ public class HomeActivity extends AppCompatActivity implements DeleteTiming {
 
     @Override
     public void deleteTiming(String userName, String customerName, int id) {
-        databaseAdapter.deleteTiming(userName, customerName,id);
+        databaseAdapter.deleteTiming(userName, customerName, id);
         loadData();
     }
 }

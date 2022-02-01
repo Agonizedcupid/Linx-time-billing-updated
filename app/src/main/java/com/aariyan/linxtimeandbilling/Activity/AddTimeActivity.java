@@ -66,6 +66,8 @@ public class AddTimeActivity extends AppCompatActivity implements TimePickerDial
 
     DatabaseAdapter databaseAdapter;
 
+    public static String firstDateTimes = "", secondDateTimes = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +108,12 @@ public class AddTimeActivity extends AppCompatActivity implements TimePickerDial
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (TextUtils.isEmpty(startTimeText.getText().toString())) {
+                    Toast.makeText(AddTimeActivity.this, "Add First time..", Toast.LENGTH_SHORT).show();
+
+                    return;
+                }
                 if (endTimeDateStr.equals("OPEN")) {
                     //Save the value on database:
                     saveSQLite(endTimeDateStr);
@@ -205,6 +213,7 @@ public class AddTimeActivity extends AppCompatActivity implements TimePickerDial
 //                startActivity(new Intent(AddTimeActivity.this, HomeActivity.class)
 //                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 finish();
+                saveSQLite(endTimeText.getText().toString());
                 dialogInterface.cancel();
             }
         });
@@ -225,9 +234,26 @@ public class AddTimeActivity extends AppCompatActivity implements TimePickerDial
     }
 
     private void saveSQLite(String endTime) {
+        firstDateTimes = fDate + " " + fTime;
+        String shuruDate = String.valueOf(convertUnixTime(firstDateTimes));
+        Log.d("DATE_TESTING", shuruDate);
+        String seshDate = "";
+        if (!endTime.equals("OPEN")) {
+            secondDateTimes = sDate + " " + sTime;
+            seshDate = String.valueOf(convertUnixTime(secondDateTimes));
+        } else {
+            seshDate = "OPEN";
+        }
+
+
+//        long id = databaseAdapter.insertTimingData(userName, customerName, "" +
+//                        startTimeText.getText().toString(), billableTime.getText().toString(),
+//                "" + endTime, totalTime.getText().toString(), spinnerSelection,
+//                descriptionOfWork.getText().toString());
+
         long id = databaseAdapter.insertTimingData(userName, customerName, "" +
-                        startTimeText.getText().toString(), billableTime.getText().toString(),
-                "" + endTime, totalTime.getText().toString(), spinnerSelection,
+                        shuruDate, billableTime.getText().toString(),
+                "" + seshDate, totalTime.getText().toString(), spinnerSelection,
                 descriptionOfWork.getText().toString());
 
         Log.d("TIME_TESTING", "\n UserName: " + userName + "\n CustomerName: " + customerName +
@@ -243,6 +269,21 @@ public class AddTimeActivity extends AppCompatActivity implements TimePickerDial
         } else {
             Toast.makeText(AddTimeActivity.this, "Facing error to save!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private long convertUnixTime(String unixTime) {
+        long uTime = 0;
+        try {
+            String pattern = "MM/dd/yyyy HH:mm";
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+            Date date = simpleDateFormat.parse(unixTime);
+            uTime = date.getTime();
+
+        } catch (Exception e) {
+            Toast.makeText(AddTimeActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        return uTime;
     }
 
     private void showWatch(String clickeds) {
@@ -296,14 +337,19 @@ public class AddTimeActivity extends AppCompatActivity implements TimePickerDial
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
 
+                //Month
                 int j = i1 + 1;
 
                 //date = i + "-" + j + "-" + i2;
                 date = i2 + " " + monthName[j - 1] + " " + i;
                 //2022-1-15
+
+                //Following MM-dd-yyyy HH:mm this pattern:
+                //date = j + "-" + i2 + "-" + i;
                 Log.d("TEST_DATE", date);
                 if (clicked.equals("start")) {
                     startTimeDateStr = date;
+                    // fDate = i1 + "/" + i2 + "/" + i;
                     fDate = i1 + "/" + i2 + "/" + i;
                     startTimeText.setText(String.format("%s", startTimeDateStr + " " + startTimeClockStr));
                 } else {
@@ -331,7 +377,7 @@ public class AddTimeActivity extends AppCompatActivity implements TimePickerDial
         String time = i + ":" + i1;
 
         if (billableT.equals("billable")) {
-            String t = String.valueOf(i*60 + i1);
+            String t = String.valueOf(i * 60 + i1);
             billableTime.setText(t);
         } else if (clicked.equals("start")) {
             startTimeClockStr = time;
@@ -349,6 +395,7 @@ public class AddTimeActivity extends AppCompatActivity implements TimePickerDial
     }
 
     private void calculateTotalTime() {
+        Toast.makeText(AddTimeActivity.this, "HAHA", Toast.LENGTH_SHORT).show();
         //Finding total time:
 //        String[] startTime = startTimeClockStr.split(":");
 //        String[] endTime = endTimeClockStr.split(":");
@@ -364,6 +411,7 @@ public class AddTimeActivity extends AppCompatActivity implements TimePickerDial
 
         String firstDateTime = fDate + " " + fTime;
         String secondDateTime = sDate + " " + sTime;
+
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 
         Date d1 = null;
