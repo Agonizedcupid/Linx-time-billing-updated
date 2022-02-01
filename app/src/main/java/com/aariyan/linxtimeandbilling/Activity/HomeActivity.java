@@ -61,7 +61,7 @@ public class HomeActivity extends AppCompatActivity implements DeleteTiming {
         List<TimingModel> modelList = new ArrayList<>();
         //Toast.makeText(HomeActivity.this, "Size: " + list.size(), Toast.LENGTH_SHORT).show();
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getStatus().equals("OPEN")) {
+            if (list.get(i).getCompleted().equals("No")) {
                 modelList.add(list.get(i));
             }
         }

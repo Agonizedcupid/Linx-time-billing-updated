@@ -67,6 +67,7 @@ public class AddTimeActivity extends AppCompatActivity implements TimePickerDial
     DatabaseAdapter databaseAdapter;
 
     public static String firstDateTimes = "", secondDateTimes = "";
+    private static String isCompleted = "No";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +105,12 @@ public class AddTimeActivity extends AppCompatActivity implements TimePickerDial
         descriptionOfWork = findViewById(R.id.workDescription);
         saveBtn = findViewById(R.id.saveTime);
         ignoreBtn = findViewById(R.id.ignoreTime);
+        ignoreBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,6 +220,7 @@ public class AddTimeActivity extends AppCompatActivity implements TimePickerDial
 //                startActivity(new Intent(AddTimeActivity.this, HomeActivity.class)
 //                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 finish();
+                isCompleted = "Yes";
                 saveSQLite(endTimeText.getText().toString());
                 dialogInterface.cancel();
             }
@@ -222,6 +230,7 @@ public class AddTimeActivity extends AppCompatActivity implements TimePickerDial
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
+                isCompleted = "No";
                 saveSQLite(endTimeText.getText().toString());
                 finish();
                 //startActivity(new Intent(AddTimeActivity.this, HomeActivity.class));
@@ -254,7 +263,7 @@ public class AddTimeActivity extends AppCompatActivity implements TimePickerDial
         long id = databaseAdapter.insertTimingData(userName, customerName, "" +
                         shuruDate, billableTime.getText().toString(),
                 "" + seshDate, totalTime.getText().toString(), spinnerSelection,
-                descriptionOfWork.getText().toString());
+                descriptionOfWork.getText().toString(),""+isCompleted);
 
         Log.d("TIME_TESTING", "\n UserName: " + userName + "\n CustomerName: " + customerName +
                 "\n startDate: " + startTimeText.getText().toString() + "\n endDate: " + endTime + "\n totalTime: " + totalTime.getText().toString()
@@ -280,7 +289,7 @@ public class AddTimeActivity extends AppCompatActivity implements TimePickerDial
             uTime = date.getTime();
 
         } catch (Exception e) {
-            Toast.makeText(AddTimeActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddTimeActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         return uTime;
@@ -350,14 +359,14 @@ public class AddTimeActivity extends AppCompatActivity implements TimePickerDial
                 if (clicked.equals("start")) {
                     startTimeDateStr = date;
                     // fDate = i1 + "/" + i2 + "/" + i;
-                    fDate = i1 + "/" + i2 + "/" + i;
+                    fDate = j + "/" + i2 + "/" + i;
                     startTimeText.setText(String.format("%s", startTimeDateStr + " " + startTimeClockStr));
                 } else {
                     endTimeDateStr = date;
                     if (endTimeDateStr.equals("OPEN")) {
                         endTimeDateStr = "";
                     }
-                    sDate = i1 + "/" + i2 + "/" + i;
+                    sDate = j + "/" + i2 + "/" + i;
                     endTimeText.setText(String.format("%s", endTimeDateStr + " " + endTimeClockStr));
                 }
 
@@ -365,9 +374,12 @@ public class AddTimeActivity extends AppCompatActivity implements TimePickerDial
                 //Toast.makeText(AddProperty.this, "" + availableStatus, Toast.LENGTH_SHORT).show();
 
             }
-        }, day, month, year);
+            //}, day, month, year);
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
-        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        //datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+//        new DatePickerDialog(AddTimeActivity.this, null, calendar.get(Calendar.YEAR),
+//                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
 
         datePickerDialog.show();
     }
@@ -395,7 +407,6 @@ public class AddTimeActivity extends AppCompatActivity implements TimePickerDial
     }
 
     private void calculateTotalTime() {
-        Toast.makeText(AddTimeActivity.this, "HAHA", Toast.LENGTH_SHORT).show();
         //Finding total time:
 //        String[] startTime = startTimeClockStr.split(":");
 //        String[] endTime = endTimeClockStr.split(":");

@@ -33,6 +33,9 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         TimingModel model = list.get(position);
+        if (model.getCompleted().equals("Yes")) {
+            holder.itemView.setBackgroundColor(context.getResources().getColor(android.R.color.holo_green_dark));
+        }
         holder.billableTime.setText("Billable: "+model.getBillableTime());
         holder.customerName.setText(model.getCustomerName());
     }

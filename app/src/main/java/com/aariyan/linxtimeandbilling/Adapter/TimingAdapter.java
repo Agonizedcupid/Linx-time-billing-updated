@@ -1,6 +1,7 @@
 package com.aariyan.linxtimeandbilling.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.aariyan.linxtimeandbilling.Interface.DeleteTiming;
 import com.aariyan.linxtimeandbilling.Model.TimingModel;
 import com.aariyan.linxtimeandbilling.R;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class TimingAdapter extends RecyclerView.Adapter<TimingAdapter.ViewHolder> {
@@ -38,7 +40,8 @@ public class TimingAdapter extends RecyclerView.Adapter<TimingAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         TimingModel model = list.get(position);
-        holder.status.setText(model.getStatus());
+
+
         holder.startDate.setText(convertToJavaTime(model.getStartDate()));
         holder.totalTime.setText(model.getTotalTime());
 
@@ -48,11 +51,26 @@ public class TimingAdapter extends RecyclerView.Adapter<TimingAdapter.ViewHolder
                 deleteTiming.deleteTiming(model.getUserName(), model.getCustomerName(), model.getUID());
             }
         });
+
+        if (model.getStatus().equals("OPEN")) {
+            holder.status.setText(model.getStatus());
+        } else {
+            holder.status.setText(convertToJavaTime(model.getStatus()));
+        }
     }
 
     private String convertToJavaTime(String startDate) {
-        java.util.Date time = new java.util.Date((long) Long.parseLong(startDate) * 1000);
-        return time.toString();
+        //Log.d("TEST_DATES", startDate);
+        //java.util.Date time = new java.util.Date((long) Long.parseLong(startDate) * 1000);
+        //Log.d("DATE", time.toString());
+
+        Calendar calendar = Calendar.getInstance();
+
+        // Passing the long value to calendar class function
+        calendar.setTimeInMillis(Long.parseLong(startDate));
+        System.out.println(calendar.getTime());
+
+        return calendar.getTime().toString();
     }
 
     @Override

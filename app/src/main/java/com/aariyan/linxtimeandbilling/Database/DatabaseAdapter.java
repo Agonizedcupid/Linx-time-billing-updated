@@ -103,7 +103,7 @@ public class DatabaseAdapter {
 
     //Insert Timing data
     public long insertTimingData(String USER_NAME, String CUSTOMER_NAME, String START_DATE, String BILLABLE_TIME,
-                                 String STATUS, String TOTAL_TIME, String WORK_TYPE, String DESCRIPTION) {
+                                 String STATUS, String TOTAL_TIME, String WORK_TYPE, String DESCRIPTION, String isCompleted) {
 
         SQLiteDatabase database = helper.getWritableDatabase();
 
@@ -115,6 +115,7 @@ public class DatabaseAdapter {
         contentValues.put(DatabaseHelper.STATUS, STATUS);
         contentValues.put(DatabaseHelper.TOTAL_TIME, TOTAL_TIME);
         contentValues.put(DatabaseHelper.WORK_TYPE, WORK_TYPE);
+        contentValues.put(DatabaseHelper.COMPLETED, isCompleted);
         contentValues.put(DatabaseHelper.DESCRIPTION, DESCRIPTION);
 
         long id = database.insert(DatabaseHelper.TIMING_TABLE_NAME, null, contentValues);
@@ -135,11 +136,11 @@ public class DatabaseAdapter {
 
         String[] args = {userName, customerName};
         String[] columns = {DatabaseHelper.UID, DatabaseHelper.USER_NAME, DatabaseHelper.CUSTOMER_NAME, DatabaseHelper.START_DATE,
-                DatabaseHelper.BILLABLE_TIME, DatabaseHelper.STATUS, DatabaseHelper.TOTAL_TIME, DatabaseHelper.WORK_TYPE, DatabaseHelper.DESCRIPTION};
+                DatabaseHelper.BILLABLE_TIME, DatabaseHelper.STATUS, DatabaseHelper.TOTAL_TIME, DatabaseHelper.WORK_TYPE,
+                DatabaseHelper.COMPLETED, DatabaseHelper.DESCRIPTION};
 
         Cursor cursor = database.query(DatabaseHelper.TIMING_TABLE_NAME, columns, selection, args, null, null, null);
         while (cursor.moveToNext()) {
-
             TimingModel model = new TimingModel(
                     cursor.getInt(0),
                     cursor.getString(1),
@@ -149,7 +150,8 @@ public class DatabaseAdapter {
                     cursor.getString(5),
                     cursor.getString(6),
                     cursor.getString(7),
-                    cursor.getString(8)
+                    cursor.getString(8),
+                    cursor.getString(9)
             );
             timingList.add(model);
         }
@@ -163,7 +165,8 @@ public class DatabaseAdapter {
         allJob.clear();
         SQLiteDatabase database = helper.getWritableDatabase();
         String[] columns = {DatabaseHelper.UID, DatabaseHelper.USER_NAME, DatabaseHelper.CUSTOMER_NAME, DatabaseHelper.START_DATE,
-                DatabaseHelper.BILLABLE_TIME, DatabaseHelper.STATUS, DatabaseHelper.TOTAL_TIME, DatabaseHelper.WORK_TYPE, DatabaseHelper.DESCRIPTION};
+                DatabaseHelper.BILLABLE_TIME, DatabaseHelper.STATUS, DatabaseHelper.TOTAL_TIME, DatabaseHelper.WORK_TYPE,
+                DatabaseHelper.COMPLETED, DatabaseHelper.DESCRIPTION};
 
         Cursor cursor = database.query(DatabaseHelper.TIMING_TABLE_NAME, columns, null, null, null, null, null);
         while (cursor.moveToNext()) {
@@ -177,7 +180,8 @@ public class DatabaseAdapter {
                     cursor.getString(5),
                     cursor.getString(6),
                     cursor.getString(7),
-                    cursor.getString(8)
+                    cursor.getString(8),
+                    cursor.getString(9)
             );
             allJob.add(model);
         }
@@ -190,7 +194,7 @@ public class DatabaseAdapter {
         SQLiteDatabase database = helper.getWritableDatabase();
         String selection = DatabaseHelper.USER_NAME + " LIKE ? AND " + DatabaseHelper.CUSTOMER_NAME + " LIKE ? AND " + DatabaseHelper.UID + " LIKE ?";
 
-        String[] args = {userName, customerName, ""+id};
+        String[] args = {userName, customerName, "" + id};
         long ids = database.delete(DatabaseHelper.TIMING_TABLE_NAME, selection, args);
 
         return ids;
@@ -226,7 +230,7 @@ public class DatabaseAdapter {
         private Context context;
 
         private static final String DATABASE_NAME = "linx_billing.db";
-        private static final int VERSION_NUMBER = 6;
+        private static final int VERSION_NUMBER = 7;
 
         //User Table:
         private static final String USER_TABLE_NAME = "users";
@@ -267,6 +271,7 @@ public class DatabaseAdapter {
         private static final String STATUS = "status";
         private static final String TOTAL_TIME = "totalTime";
         private static final String WORK_TYPE = "workType";
+        private static final String COMPLETED = "Completed";
         private static final String DESCRIPTION = "description";
         //Creating the table:
         private static final String CREATE_TIMING_TABLE = "CREATE TABLE " + TIMING_TABLE_NAME
@@ -278,6 +283,7 @@ public class DatabaseAdapter {
                 + STATUS + " VARCHAR(255),"
                 + TOTAL_TIME + " VARCHAR(255),"
                 + WORK_TYPE + " VARCHAR(255),"
+                + COMPLETED + " VARCHAR(255),"
                 + DESCRIPTION + " VARCHAR(255));";
         private static final String DROP_TIMING_TABLE = "DROP TABLE IF EXISTS " + TIMING_TABLE_NAME;
 
