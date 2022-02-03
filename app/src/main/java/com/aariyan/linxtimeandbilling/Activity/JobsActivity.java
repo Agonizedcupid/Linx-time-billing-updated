@@ -39,7 +39,7 @@ public class JobsActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     DatabaseAdapter databaseAdapter;
-    private List<TimingModel> list = new ArrayList<>();
+    private static List<TimingModel> list = new ArrayList<>();
     private JobAdapter adapter;
 
     private List<PostingModel> posting = new ArrayList<>();
@@ -52,6 +52,7 @@ public class JobsActivity extends AppCompatActivity {
         initUI();
 
         loadData();
+        formatData(list);
     }
 
     private void loadData() {
@@ -59,27 +60,28 @@ public class JobsActivity extends AppCompatActivity {
         adapter = new JobAdapter(JobsActivity.this, list);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-
-        formatData(list);
     }
 
     private void formatData(List<TimingModel> list) {
         posting.clear();
         for (int i = 0; i < list.size(); i++) {
-            if (!list.get(i).getStatus().equals("OPEN")) {
+            //if (!list.get(i).getStatus().equals("OPEN")) {
+            if (list.get(i).getCompleted().equals("Yes")) {
                 posting.add(new PostingModel(
                         "" + list.get(i).getDescription(),
                         "" + System.currentTimeMillis(),
                         "" + list.get(i).getCustomerName(),
-                        "",
-                        "1642320000000",
-                        "1642336200000",
+                        "ADHOC",
+//                        "1642320000000",
+//                        "1642336200000",
+                        ""+list.get(i).getStartDate(),
+                        ""+list.get(i).getStatus(),
                         "" + list.get(i).getTotalTime(),
                         "420",
                         "" + Constant.UID,
                         "0",
                         //"LL" + list.get(i).getWorkType(),
-                        "" + list.get(i).getBillableTime(),
+                        "" + (Double.parseDouble(list.get(i).getBillableTime()) * 60),
                         "",
                         "7"
                 ));
@@ -95,6 +97,10 @@ public class JobsActivity extends AppCompatActivity {
                         public void onResponse(String response) {
                             //Log.d("FEEDBACK", response);
                             Toast.makeText(JobsActivity.this, "Posted successfully!", Toast.LENGTH_SHORT).show();
+
+                            //Now Removing the data from SQLite:
+                            deleteUploadedJobs();
+
                         }
                     }, new Response.ErrorListener() {
                 @Override
@@ -115,6 +121,18 @@ public class JobsActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    private void deleteUploadedJobs() {
+        long id;
+
+        for (int i=0; i<list.size(); i++) {
+            if (list.get(i).getCompleted().equals("Yes")) {
+                id = databaseAdapter.deleteJobs(list.get(i).getUID());
+            }
+        }
+
+        loadData();
     }
 
     private void initUI() {

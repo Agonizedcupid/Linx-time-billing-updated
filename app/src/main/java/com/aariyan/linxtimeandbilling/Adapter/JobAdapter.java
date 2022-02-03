@@ -19,7 +19,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ViewHolder> {
     private Context context;
     private List<TimingModel> list;
 
-    public JobAdapter(Context context,List<TimingModel> list) {
+    public JobAdapter(Context context, List<TimingModel> list) {
         this.context = context;
         this.list = list;
     }
@@ -27,7 +27,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.single_job_list,parent,false));
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.single_job_list, parent, false));
     }
 
     @Override
@@ -36,7 +36,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ViewHolder> {
         if (model.getCompleted().equals("Yes")) {
             holder.itemView.setBackgroundColor(context.getResources().getColor(android.R.color.holo_green_dark));
         }
-        holder.billableTime.setText("Billable: "+model.getBillableTime());
+        holder.billableTime.setText("Billable: " + (Double.parseDouble(model.getBillableTime()) * 60));
         holder.customerName.setText(model.getCustomerName());
     }
 
@@ -49,6 +49,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ViewHolder> {
 
         private TextView customerName;
         private TextView billableTime;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 

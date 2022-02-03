@@ -200,6 +200,18 @@ public class DatabaseAdapter {
         return ids;
     }
 
+    //Delete timing
+    public long deleteJobs(int id) {
+        SQLiteDatabase database = helper.getWritableDatabase();
+        //select * from table_name where id = id
+        String selection = DatabaseHelper.UID + " LIKE ?";
+
+        String[] args = { "" + id};
+        long ids = database.delete(DatabaseHelper.TIMING_TABLE_NAME, selection, args);
+
+        return ids;
+    }
+
 //
 //    public int updatePoLines(String name, int quantity) {
 //
